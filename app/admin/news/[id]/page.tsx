@@ -1,0 +1,2 @@
+import{notFound}from"next/navigation";import NewsForm from"@/components/admin/NewsForm";import{createClient}from"@/lib/supabase/server";import{saveNews}from"../../actions";
+export default async function EditNews({params}:{params:{id:string}}){const s=createClient();if(!s)notFound();const{data}=await s.from("news").select("*").eq("id",params.id).maybeSingle();if(!data)notFound();return <><h1>Edit News</h1><NewsForm post={data} action={saveNews}/></>}

@@ -1,0 +1,4 @@
+"use client";
+import Link from"next/link";import{usePathname,useRouter}from"next/navigation";import{createClient}from"@/lib/supabase/client";
+const links=[["/admin","Dashboard"],["/admin/products","Products"],["/admin/content","Home / About / Factory"],["/admin/media","Images & Videos"],["/admin/news","News"],["/admin/inquiries","Inquiries"],["/admin/quotes","Quotation Database"]];
+export default function AdminSidebar(){const path=usePathname(),router=useRouter();async function logout(){await createClient().auth.signOut();router.push("/admin/login");router.refresh()}return <aside className="admin-sidebar"><div className="logo"><strong>XINSHERN</strong><small>CONTENT ADMIN</small></div><nav>{links.map(([href,label])=><Link className={path===href?"active":""} key={href} href={href}>{label}</Link>)}</nav><button onClick={logout}>Sign Out</button><Link href="/" target="_blank">View Website ↗</Link></aside>}

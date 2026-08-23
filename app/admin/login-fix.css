@@ -1,0 +1,2 @@
+.admin-body:has(.admin-login){grid-template-columns:1fr!important}
+.admin-body:has(.admin-login) .admin-sidebar{display:none}

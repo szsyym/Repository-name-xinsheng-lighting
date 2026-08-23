@@ -1,0 +1,1 @@
+export default function SectionHead({kicker,title,accent,description}:{kicker?:string;title:string;accent?:string;description?:string}){return <div className="section-head">{kicker&&<div className="kicker">{kicker}</div>}<h2>{title} {accent&&<span className="accent">{accent}</span>}</h2>{description&&<p>{description}</p>}</div>}
