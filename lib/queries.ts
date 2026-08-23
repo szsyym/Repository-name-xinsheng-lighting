@@ -1,6 +1,18 @@
 import { createClient } from "./supabase/server";
 import { fallbackGallery, fallbackNews, fallbackPages, fallbackProducts } from "./fallback";
-import type { GalleryItem, NewsPost, Product, SitePage } from "./types";
+import type { GalleryItem, NewsPost, Product, ProductCategory, SitePage } from "./types";
+
+export const defaultCategories = ["Gift Lights","Festival Lights","Stage Lights","Table & Floor Lamps","Outdoor Lights","Tape & String Lights","Commercial Lighting","Track Lighting"];
+
+export async function getCategories(includeDrafts=false) {
+  const supabase=createClient();
+  if(!supabase) return defaultCategories.map((name,index)=>({id:`default-${index}`,name,slug:name.toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,""),description:"",sort_order:index,published:true}));
+  let query=supabase.from("product_categories").select("*").order("sort_order").order("name");
+  if(!includeDrafts) query=query.eq("published",true);
+  const {data,error}=await query;
+  if(error||!data?.length) return defaultCategories.map((name,index)=>({id:`default-${index}`,name,slug:name.toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,""),description:"",sort_order:index,published:true}));
+  return data as ProductCategory[];
+}
 
 export async function getProducts(options?: { featured?: boolean; category?: string; includeDrafts?: boolean }) {
   const supabase = createClient(); if (!supabase) return fallbackProducts;

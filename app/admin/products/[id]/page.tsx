@@ -1,2 +1,2 @@
-import{notFound}from"next/navigation";import ProductForm from"@/components/admin/ProductForm";import{getProductById}from"@/lib/queries";import{updateProduct}from"../../actions";
-export default async function EditProduct({params}:{params:{id:string}}){const p=await getProductById(params.id);if(!p)notFound();return <><h1>Edit Product</h1><ProductForm product={p} action={updateProduct.bind(null,p.id,p.media||[])}/></>}
+import{notFound}from"next/navigation";import ProductForm from"@/components/admin/ProductForm";import{getCategories,getProductById}from"@/lib/queries";import{updateProduct}from"../../actions";
+export default async function EditProduct({params}:{params:{id:string}}){const[p,categories]=await Promise.all([getProductById(params.id),getCategories(true)]);if(!p)notFound();return <><h1>Edit Product</h1><ProductForm product={p} categories={categories} action={updateProduct.bind(null,p.id,p.media||[])}/></>}

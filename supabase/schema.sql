@@ -10,6 +10,11 @@ create table if not exists public.products (
   status text not null default 'draft' check (status in ('draft','published')), sort_order integer default 0,
   created_at timestamptz default now(), updated_at timestamptz default now()
 );
+create table if not exists public.product_categories (
+  id uuid primary key default gen_random_uuid(), name text unique not null, slug text unique not null,
+  description text default '', sort_order integer default 0, published boolean default true,
+  created_at timestamptz default now(), updated_at timestamptz default now()
+);
 create table if not exists public.pages (
   slug text primary key, title text not null, eyebrow text default '', heading text default '', body text default '',
   content jsonb not null default '{}', media jsonb not null default '[]', published boolean default true,
@@ -43,7 +48,15 @@ insert into public.pages(slug,title,eyebrow,heading,body) values
 ('factory','Factory','From prototype to mass production','Manufacturing with accountability','Our production, R&D, inspection and warehousing teams work together to deliver consistent products and reliable lead times.')
 on conflict(slug) do nothing;
 
+insert into public.product_categories(name,slug,sort_order) values
+('Gift Lights','gift-lights',1),('Festival Lights','festival-lights',2),('Stage Lights','stage-lights',3),
+('Table & Floor Lamps','table-floor-lamps',4),('Outdoor Lights','outdoor-lights',5),
+('Tape & String Lights','tape-string-lights',6),('Commercial Lighting','commercial-lighting',7),
+('Track Lighting','track-lighting',8)
+on conflict(name) do nothing;
+
 alter table public.products enable row level security; alter table public.pages enable row level security;
+alter table public.product_categories enable row level security;
 alter table public.site_media enable row level security; alter table public.news enable row level security;
 alter table public.inquiries enable row level security; alter table public.quotes enable row level security;
 
@@ -51,6 +64,10 @@ drop policy if exists "public read published products" on public.products;
 create policy "public read published products" on public.products for select using(status='published' or auth.role()='authenticated');
 drop policy if exists "admin products" on public.products;
 create policy "admin products" on public.products for all to authenticated using(true) with check(true);
+drop policy if exists "public read product categories" on public.product_categories;
+create policy "public read product categories" on public.product_categories for select using(published=true or auth.role()='authenticated');
+drop policy if exists "admin product categories" on public.product_categories;
+create policy "admin product categories" on public.product_categories for all to authenticated using(true) with check(true);
 drop policy if exists "public read pages" on public.pages;
 create policy "public read pages" on public.pages for select using(published=true or auth.role()='authenticated');
 drop policy if exists "admin pages" on public.pages;
@@ -83,6 +100,7 @@ drop policy if exists "admin media delete" on storage.objects;
 create policy "admin media delete" on storage.objects for delete to authenticated using(bucket_id='media');
 
 create index if not exists products_category_idx on public.products(category);
+create index if not exists product_categories_sort_idx on public.product_categories(sort_order,name);
 create index if not exists products_status_idx on public.products(status,featured,sort_order);
 create index if not exists site_media_collection_idx on public.site_media(collection,sort_order);
 create index if not exists news_status_date_idx on public.news(status,published_at desc);

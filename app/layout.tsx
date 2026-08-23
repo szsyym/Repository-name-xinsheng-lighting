@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import SiteChrome from "@/components/SiteChrome";
+import { getCategories } from "@/lib/queries";
 
 export const metadata: Metadata = {
   metadataBase: new URL(process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000"),
@@ -10,6 +11,7 @@ export const metadata: Metadata = {
   openGraph:{title:"Xinshern Lighting",description:"Lighting products designed, engineered and manufactured for global brands.",type:"website"}
 };
 
-export default function RootLayout({children}:{children:React.ReactNode}){
-  return <html lang="en"><body><SiteChrome>{children}</SiteChrome></body></html>;
+export default async function RootLayout({children}:{children:React.ReactNode}){
+  const categories=(await getCategories()).map(category=>category.name);
+  return <html lang="en"><body><SiteChrome categories={categories}>{children}</SiteChrome></body></html>;
 }
