@@ -56,10 +56,19 @@ export default function PageForm({ page, action }: { page: SitePage; action: (fo
     </>}
 
     <label>External Video URL<input name="video_url" defaultValue={String(content.video_url || "")} placeholder="YouTube or hosted video URL"/></label>
-    {page.media?.length ? <div className="admin-media-grid">{page.media.map((m, i) => <label className="admin-media check" key={m.url}>
-      {m.type === "video" ? <video src={m.url} controls/> : <img src={m.url} alt=""/>}
-      <span><input type="checkbox" name={`keep_page_media_${i}`} defaultChecked/> Keep (uncheck to delete)</span>
-    </label>)}</div> : null}
+    {content.video_url ? <label className="delete-media-check delete-external-video">
+      <input type="checkbox" name="delete_external_video"/> Delete external video link
+    </label> : null}
+    {page.media?.length ? <div>
+      <h3>Current Page Images / Videos</h3>
+      <p className="hint">Select Delete below any file, then click the orange Save button to remove it. Every image and video can be deleted.</p>
+      <div className="admin-media-grid">{page.media.map((m, i) => <div className="admin-media" key={`${m.url}-${i}`}>
+        {m.type === "video" ? <video src={m.url} controls/> : <img src={m.url} alt={m.alt || ""}/>}
+        <div className="admin-media-control">
+          <label className="delete-media-check"><input type="checkbox" name={`delete_page_media_${i}`}/> Delete this {m.type === "video" ? "video" : "image"}</label>
+        </div>
+      </div>)}</div>
+    </div> : null}
     <label>Upload Page Images / Videos<input type="file" name="media" accept="image/*,video/*" multiple/></label>
     <label className="check"><input type="checkbox" name="published" defaultChecked={page.published}/> Published</label>
     <button className="btn-primary">Save {page.title}</button>
