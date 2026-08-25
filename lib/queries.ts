@@ -1,6 +1,6 @@
 import { createClient } from "./supabase/server";
 import { fallbackGallery, fallbackNews, fallbackPages, fallbackProducts } from "./fallback";
-import type { GalleryItem, NewsPost, Product, ProductCategory, SitePage } from "./types";
+import type { ContentEntry, GalleryItem, NewsPost, Product, ProductCategory, SitePage, SiteSetting } from "./types";
 
 export const defaultCategories = ["Gift Lights","Festival Lights","Stage Lights","Table & Floor Lamps","Outdoor Lights","Tape & String Lights","Commercial Lighting","Track Lighting"];
 
@@ -41,3 +41,6 @@ export async function getPagesForAdmin(){ const supabase=createClient(); if(!sup
 export async function getNews(limit?:number, includeDrafts=false){ const supabase=createClient(); if(!supabase)return limit?fallbackNews.slice(0,limit):fallbackNews; let q=supabase.from("news").select("*").order("published_at",{ascending:false}); if(!includeDrafts)q=q.eq("status","published"); if(limit)q=q.limit(limit); const{data}=await q; return data?.length?data as NewsPost[]:(limit?fallbackNews.slice(0,limit):fallbackNews); }
 export async function getNewsPost(slug:string){ const supabase=createClient(); if(!supabase)return fallbackNews.find(n=>n.slug===slug)||null; const{data}=await supabase.from("news").select("*").eq("slug",slug).eq("status","published").maybeSingle(); return (data as NewsPost|null)||null; }
 export async function getGallery(collection?:GalleryItem["collection"]){ const supabase=createClient(); if(!supabase)return fallbackGallery; let q=supabase.from("site_media").select("*").eq("published",true).order("sort_order"); if(collection)q=q.eq("collection",collection); const{data}=await q; return (data as GalleryItem[])||[]; }
+export async function getContentEntries(type?:ContentEntry["type"],includeDrafts=false){const s=createClient();if(!s)return[];let q=s.from("content_entries").select("*").order("published_at",{ascending:false});if(type)q=q.eq("type",type);if(!includeDrafts)q=q.eq("status","published");const{data}=await q;return(data as ContentEntry[])||[]}
+export async function getContentEntry(slug:string){const s=createClient();if(!s)return null;const{data}=await s.from("content_entries").select("*").eq("slug",slug).eq("status","published").maybeSingle();return data as ContentEntry|null}
+export async function getSetting(key:string){const s=createClient();if(!s)return null;const{data}=await s.from("site_settings").select("*").eq("key",key).maybeSingle();return data as SiteSetting|null}

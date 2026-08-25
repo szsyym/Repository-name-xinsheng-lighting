@@ -1,0 +1,2 @@
+import{notFound}from"next/navigation";import{createClient}from"@/lib/supabase/server";import ContentEntryForm from"@/components/admin/ContentEntryForm";import{saveContentEntry}from"../../actions";
+export default async function Edit({params}:{params:{id:string}}){const s=createClient();const{data}=s?await s.from("content_entries").select("*").eq("id",params.id).maybeSingle():{data:null};if(!data)notFound();return <><h1>Edit Content</h1><ContentEntryForm entry={data} action={saveContentEntry}/></>}

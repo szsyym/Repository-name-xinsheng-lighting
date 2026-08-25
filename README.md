@@ -1,4 +1,4 @@
-# XINSHERN Lighting Website + Supabase CMS
+# XINSHERN Lighting Website + AI/SEO CMS V3
 
 完整的灯具外贸官网源码，技术栈：Next.js 14、TypeScript、Tailwind CSS、Supabase、GitHub、Vercel。
 
@@ -16,7 +16,10 @@
 - 后台独立管理并发布客户合影、合作客户 Logo
 - 后台管理首页轮播、场景图片视频、Factory Gallery
 - 后台产品、News、询盘管理
-- 后台报价数据库和完整 CSV 导出（9 项 Packing Size 不丢失）
+- 后台报价数据库和带格式、公式、合并标题、筛选的 Excel 导出（9 项 Packing Size 不丢失）
+- 后台可编辑 Solutions、Knowledge Base、全局 FAQ、案例、SEO、AI Summary 和企业实体
+- 自动生成 Product / Organization / FAQ / Breadcrumb 结构化数据、Sitemap、Robots、Canonical、Open Graph 和 llms.txt
+- 后台上传 Catalog PDF，首页画册按钮自动更新
 - 没有连接 Supabase 时自动显示演示内容，方便先预览
 
 ## 本地启动
@@ -31,8 +34,8 @@ npm run dev
 
 后台地址：`http://localhost:3000/admin/login`
 
-完整部署步骤请看 `部署说明-中文.md`。
+完整部署步骤请看 `部署说明-V3.md`。
 
 ## 已部署旧版本的更新方法
 
-先在 Supabase SQL Editor 运行一次 `supabase/update-v2.sql`，再将新版代码提交到 GitHub。Vercel 会自动重新部署。
+先在 Supabase SQL Editor 运行一次 `supabase/update-v3.sql`，再将新版代码提交到 GitHub。Vercel 会自动重新部署。
