@@ -23,11 +23,12 @@ export async function getProducts(options?: { featured?: boolean; category?: str
   const { data, error } = await query; return error || !data?.length ? fallbackProducts : data as Product[];
 }
 export async function getProduct(slug: string, includeDrafts=false) {
+  const requested=decodeURIComponent(slug).trim();
   const supabase = createClient();
-  if (!supabase) return fallbackProducts.find(p=>p.slug===slug) || null;
-  let query = supabase.from("products").select("*").eq("slug", slug);
+  if (!supabase) return fallbackProducts.find(p=>p.slug.toLowerCase()===requested.toLowerCase()||p.model?.toLowerCase()===requested.toLowerCase()) || null;
+  let query = supabase.from("products").select("*").or(`slug.ilike.${requested},model.ilike.${requested}`);
   if (!includeDrafts) query = query.eq("status", "published");
-  const { data } = await query.maybeSingle(); return (data as Product | null) || fallbackProducts.find(p=>p.slug===slug) || null;
+  const { data } = await query.limit(1).maybeSingle(); return (data as Product | null) || fallbackProducts.find(p=>p.slug.toLowerCase()===requested.toLowerCase()||p.model?.toLowerCase()===requested.toLowerCase()) || null;
 }
 export async function getProductById(id: string) {
   const supabase=createClient(); if(!supabase) return fallbackProducts.find(p=>p.id===id)||null;
@@ -39,7 +40,7 @@ export async function getPage(slug: string) {
 }
 export async function getPagesForAdmin(){ const supabase=createClient(); if(!supabase)return Object.values(fallbackPages); const {data}=await supabase.from("pages").select("*").order("slug"); return (data as SitePage[])||Object.values(fallbackPages); }
 export async function getNews(limit?:number, includeDrafts=false){ const supabase=createClient(); if(!supabase)return limit?fallbackNews.slice(0,limit):fallbackNews; let q=supabase.from("news").select("*").order("published_at",{ascending:false}); if(!includeDrafts)q=q.eq("status","published"); if(limit)q=q.limit(limit); const{data}=await q; return data?.length?data as NewsPost[]:(limit?fallbackNews.slice(0,limit):fallbackNews); }
-export async function getNewsPost(slug:string){ const supabase=createClient(); if(!supabase)return fallbackNews.find(n=>n.slug===slug)||null; const{data}=await supabase.from("news").select("*").eq("slug",slug).eq("status","published").maybeSingle(); return (data as NewsPost|null)||null; }
+export async function getNewsPost(slug:string){ const requested=decodeURIComponent(slug).trim();const supabase=createClient(); if(!supabase)return fallbackNews.find(n=>n.slug.toLowerCase()===requested.toLowerCase())||null; const{data}=await supabase.from("news").select("*").ilike("slug",requested).eq("status","published").limit(1).maybeSingle(); return (data as NewsPost|null)||fallbackNews.find(n=>n.slug.toLowerCase()===requested.toLowerCase())||null; }
 export async function getGallery(collection?:GalleryItem["collection"]){ const supabase=createClient(); if(!supabase)return fallbackGallery; let q=supabase.from("site_media").select("*").eq("published",true).order("sort_order"); if(collection)q=q.eq("collection",collection); const{data}=await q; return (data as GalleryItem[])||[]; }
 export async function getContentEntries(type?:ContentEntry["type"],includeDrafts=false){const s=createClient();if(!s)return[];let q=s.from("content_entries").select("*").order("published_at",{ascending:false});if(type)q=q.eq("type",type);if(!includeDrafts)q=q.eq("status","published");const{data}=await q;return(data as ContentEntry[])||[]}
 export async function getContentEntry(slug:string){const s=createClient();if(!s)return null;const{data}=await s.from("content_entries").select("*").eq("slug",slug).eq("status","published").maybeSingle();return data as ContentEntry|null}

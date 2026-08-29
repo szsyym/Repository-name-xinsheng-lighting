@@ -29,7 +29,12 @@ export default async function Home() {
     <div className="trust-bar"><div className="container trust-items"><span>14+ Years Experience</span><span>ISO 9001 Certified</span><span>Global B2B Service</span><span>24h Response Time</span><span>OEM / ODM Available</span></div></div>
     <HeroCarousel items={hero} eyebrow={page?.eyebrow} heading={page?.heading} body={page?.body} ctaLabel={String(content.cta_label || "Request a Quote")} ctaUrl={String(content.cta_url || "/contact")} catalogLabel={String(content.catalog_label || "Download Catalog")} catalogUrl={catalog[0]?.media_url || String(content.catalog_url || "/contact")}/>
 
-    <section className="home-stats"><div className="container stats"><div className="stat"><strong>14+</strong><span>Years Experience</span></div><div className="stat"><strong>3,000</strong><span>Units / Day</span></div><div className="stat"><strong>3,000m²</strong><span>Factory Area</span></div><div className="stat"><strong>20+</strong><span>Markets Served</span></div></div></section>
+    <section className="home-stats"><div className="container stats">{[
+      ["stat_value_1", "14+", "stat_label_1", "Years Experience"],
+      ["stat_value_2", "3,000", "stat_label_2", "Units / Day"],
+      ["stat_value_3", "3,000m²", "stat_label_3", "Factory Area"],
+      ["stat_value_4", "20+", "stat_label_4", "Markets Served"],
+    ].map(([valueKey, valueDefault, labelKey, labelDefault]) => <div className="stat" key={valueKey}><strong>{String(content[valueKey] || valueDefault)}</strong><span>{String(content[labelKey] || labelDefault)}</span></div>)}</div></section>
 
     <div className="section-divider"/>
     <section className="section customer-section"><div className="container">
@@ -59,7 +64,7 @@ export default async function Home() {
 
     <div className="section-divider"/>
     <section className="section"><div className="container">
-      <SectionHead title="Latest" accent="News" description="Company updates, product knowledge and industry insights"/>
+      <Link href="/news" className="section-head-link" aria-label="View all news"><SectionHead title="Latest" accent="News" description="Company updates, product knowledge and industry insights"/></Link>
       <div className="news-grid">{news.map(n => <Link href={`/news/${n.slug}`} className="card" key={n.id}><div className="news-cover">{n.cover_url ? <img src={n.cover_url} alt={n.title}/> : <span className="accent news-star">✦</span>}<span className="news-date">{new Date(n.published_at).toLocaleDateString("en", { month: "short", day: "numeric", year: "numeric" })}</span></div><div className="news-info"><small>{n.category}</small><h3>{n.title}</h3><p>{n.excerpt}</p></div></Link>)}</div>
     </div></section>
 
