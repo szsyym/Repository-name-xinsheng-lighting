@@ -63,6 +63,22 @@ export default function PageForm({ page, action }: { page: SitePage; action: (fo
       </div>)}
     </>}
 
+    {page.slug === "contact" && <>
+      <h3>Contact Details</h3>
+      <label>Company Name<input name="section_title_1" defaultValue={String(sections[0]?.title || "Shenzhen Xinshern Technology Co., Ltd.")}/></label>
+      <input type="hidden" name="section_body_1" value=""/>
+      <div className="admin-form-grid">
+        <label>Head Office Label<input name="section_title_2" defaultValue={String(sections[1]?.title || "Head Office")}/></label>
+        <label>Head Office Address<textarea name="section_body_2" defaultValue={String(sections[1]?.body || "#388 Dongchang Road, Fenghuang Street, Guangming District, Shenzhen, China")}/></label>
+        <label>Factory Address Label<input name="section_title_3" defaultValue={String(sections[2]?.title || "Factory Address")}/></label>
+        <label>Factory Address<textarea name="section_body_3" defaultValue={String(sections[2]?.body || "#106 LingNan Road, Tangxia Town, Dongguan, China")}/></label>
+        <label>Email Label<input name="section_title_4" defaultValue={String(sections[3]?.title || "Email")}/></label>
+        <label>Email Address<input type="email" name="section_body_4" defaultValue={String(sections[3]?.body || "sales@szxinshengtech.com")}/></label>
+        <label>Factory Tours Label<input name="section_title_5" defaultValue={String(sections[4]?.title || "Factory Tours")}/></label>
+        <label>Factory Tours Description<textarea name="section_body_5" defaultValue={String(sections[4]?.body || "Visits are welcome by appointment.")}/></label>
+      </div>
+    </>}
+
     <label>External Video URL<input name="video_url" defaultValue={String(content.video_url || "")} placeholder="YouTube or hosted video URL"/></label>
     {content.video_url ? <label className="delete-media-check delete-external-video">
       <input type="checkbox" name="delete_external_video"/> Delete external video link
