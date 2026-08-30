@@ -63,6 +63,16 @@ export default function PageForm({ page, action }: { page: SitePage; action: (fo
       </div>)}
     </>}
 
+    {page.slug === "products" && <>
+      <h3>All Products Search</h3>
+      <div className="admin-form-grid">
+        <label>Search Box Placeholder<input name="section_title_1" defaultValue={String(sections[0]?.title || "Search by product name, model or category")}/></label>
+        <label>Search Label<input name="section_body_1" defaultValue={String(sections[0]?.body || "Search all products")}/></label>
+        <label>No Results Message<input name="section_title_2" defaultValue={String(sections[1]?.title || "No matching products found.")}/></label>
+        <label>Product Count Label<input name="section_body_2" defaultValue={String(sections[1]?.body || "products")}/></label>
+      </div>
+    </>}
+
     {page.slug === "contact" && <>
       <h3>Contact Details</h3>
       <label>Company Name<input name="section_title_1" defaultValue={String(sections[0]?.title || "Shenzhen Xinshern Technology Co., Ltd.")}/></label>

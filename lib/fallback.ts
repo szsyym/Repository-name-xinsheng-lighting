@@ -14,6 +14,7 @@ export const fallbackNews: NewsPost[] = [
 
 export const fallbackPages: Record<string, SitePage> = {
   home:{slug:"home",title:"Home",eyebrow:"Smart Lighting Solutions Since 2011",heading:"Illuminate the Future with Intelligent Light",body:"Shenzhen Xinshern Technology designs and manufactures dependable lighting products for global B2B markets.",content:{},media:[],published:true},
+  products:{slug:"products",title:"All Products",eyebrow:"Product Center",heading:"All Products",body:"Browse our complete product range, organized by lighting category.",content:{sections:[{title:"Search by product name, model or category",body:"Search all products"},{title:"No matching products found.",body:"products"}]},media:[],published:true},
   about:{slug:"about",title:"About Xinshern",eyebrow:"Lighting expertise, built over time",heading:"A dependable product partner from Shenzhen",body:"Founded in 2011, Xinshern integrates product development, manufacturing, quality control and export service for festival, gift, ambient and home lighting.",content:{},media:[],published:true},
   factory:{slug:"factory",title:"Factory",eyebrow:"From prototype to mass production",heading:"Manufacturing with accountability",body:"Our production, R&D, inspection and warehousing teams work together to deliver consistent products and reliable lead times.",content:{},media:[],published:true}
 };
