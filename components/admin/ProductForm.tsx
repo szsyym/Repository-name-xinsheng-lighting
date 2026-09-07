@@ -1,18 +1,23 @@
+"use client";
+
 import Link from "next/link";
+import { useFormState } from "react-dom";
+import type { ProductActionState } from "@/app/admin/actions";
 import type { Product, ProductCategory } from "@/lib/types";
 import ProductMediaManager from "@/components/admin/ProductMediaManager";
 const asLines = (value?: string[]) => value?.join("\n") || "";
 
-export default function ProductForm({ product, categories, action }: { product?: Product; categories: ProductCategory[]; action: (form: FormData) => void }) {
+export default function ProductForm({ product, categories, action }: { product?: Product; categories: ProductCategory[]; action: (state: ProductActionState, form: FormData) => Promise<ProductActionState> }) {
+  const [state, formAction] = useFormState(action, {});
   const specs = (product?.specifications || []).map(item => `${item.label} | ${item.value}`).join("\n");
   const packing = (product?.packing_size || []).map(item => `${item.label} | ${item.value}`).join("\n");
   const faqs = (product?.faqs || []).map(item => `${item.question} | ${item.answer}`).join("\n");
-  return <form className="admin-form" action={action}>
+  return <form className="admin-form" action={formAction}>
     <div className="admin-form-grid"><label>Product Name *<input name="name" defaultValue={product?.name} required/></label><label>Model *<input name="model" defaultValue={product?.model} placeholder="e.g. XSH-004"/></label><label>URL Slug<input name="slug" defaultValue={product?.slug} placeholder="auto-created-from-model-or-name"/></label><label>Category<select name="category" defaultValue={product?.category || categories[0]?.name}>{categories.map(category => <option key={category.id} value={category.name}>{category.name}</option>)}</select><span className="hint"><Link className="accent" href="/admin/categories">Add or manage categories →</Link></span></label><label>Subcategory<input name="subcategory" defaultValue={product?.subcategory}/></label><label>MOQ<input name="moq" defaultValue={product?.moq} placeholder="500 pcs"/></label><label>Sort Order<input type="number" name="sort_order" defaultValue={product?.sort_order || 0}/></label></div>
     <label>Short Description *<textarea name="short_description" defaultValue={product?.short_description} required/></label><label>Product Overview<textarea name="description" defaultValue={product?.description}/></label><label>Features<span className="hint">One feature per line. Appears only in the top feature panel.</span><textarea name="features" defaultValue={asLines(product?.features)}/></label><label>Applications<textarea name="applications" defaultValue={asLines(product?.applications)}/></label><label>Customization Options<textarea name="customization" defaultValue={asLines(product?.customization)}/></label><label>Specifications<span className="hint">Parameter | Value</span><textarea name="specifications" defaultValue={specs}/></label><label>Packing Info — 9 Parameters<textarea name="packing_size" defaultValue={packing}/></label><label>Package Included<textarea name="parts_list" defaultValue={asLines(product?.parts_list)}/></label><label>Product FAQ<span className="hint">Question | Answer</span><textarea name="faqs" defaultValue={faqs}/></label>
     <div className="admin-form-grid"><label>YouTube / Video URL<input name="youtube_url" type="url" defaultValue={product?.youtube_url}/></label><label>Datasheet PDF URL<input name="datasheet_url" type="url" defaultValue={product?.datasheet_url}/></label></div>
     <ProductMediaManager productId={product?.id} existing={product?.media || []}/>
     <h2>SEO &amp; AI / GEO</h2><div className="admin-form-grid"><label>SEO Title<input name="seo_title" defaultValue={product?.seo?.title}/></label><label>Canonical URL<input name="canonical" type="url" defaultValue={product?.seo?.canonical}/></label></div><label>SEO Description<textarea name="seo_description" defaultValue={product?.seo?.description}/></label><label>SEO Keywords<input name="seo_keywords" defaultValue={product?.seo?.keywords}/></label><label>AI Product Summary<textarea name="ai_summary" defaultValue={product?.ai_summary}/></label>
-    <div className="admin-form-grid"><label className="check"><input type="checkbox" name="featured" defaultChecked={product?.featured}/> Featured product</label><label>Status<select name="status" defaultValue={product?.status || "draft"}><option value="draft">Draft</option><option value="published">Published</option></select></label></div><button className="btn-primary" type="submit">Save Product</button>
+    <div className="admin-form-grid"><label className="check"><input type="checkbox" name="featured" defaultChecked={product?.featured}/> Featured product</label><label>Status<select name="status" defaultValue={product?.status || "draft"}><option value="draft">Draft</option><option value="published">Published</option></select></label></div>{state.error && <p className="form-error" role="alert">Save failed: {state.error}</p>}<button className="btn-primary" type="submit">Save Product</button>
   </form>;
 }
