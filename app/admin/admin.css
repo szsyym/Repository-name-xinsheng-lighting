@@ -6,3 +6,17 @@
 @media(max-width:900px){.product-upload-grid{grid-template-columns:repeat(2,1fr)}}
 .batch-upload-label{margin:14px 0 18px;padding:18px;border:2px dashed #ed7117;border-radius:10px;background:#fff7ed;color:#8b430f}.batch-upload-label input{margin-top:5px;background:#fff}.batch-file-name{padding:8px 2px 0;color:#817567;font-size:11px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .admin-table-wrap{overflow-x:auto}.product-main-thumb{display:block;width:64px;height:48px;object-fit:cover;border-radius:5px}.no-image{color:#8f8375;font-size:12px;white-space:nowrap}.remove-media-button{margin-top:8px;border:0;background:none;color:#b3261e;font-weight:800;cursor:pointer;padding:0}.remove-media-button:disabled{opacity:.55;cursor:wait}.media-error{color:#b3261e;font-size:13px;font-weight:700}
+
+/* XINSHENG UPDATE 2026-09: admin editor and media controls */
+.rich-toolbar select{border:1px solid #d8cbbb;background:#fff;border-radius:5px;padding:6px 8px;color:#2b241d;cursor:pointer}
+.admin-seo-grid{display:grid;grid-template-columns:minmax(260px,.8fr) minmax(420px,1.6fr);gap:18px}
+.seo-description-field textarea{min-height:72px;max-height:110px;resize:vertical}
+.remove-media-button{width:100%;margin-top:8px;padding:8px 10px;border:1px solid #d83b31;border-radius:7px;background:#fff;color:#b3261e;font-weight:800;cursor:pointer}
+.remove-media-button:hover{background:#fff0ee}
+@media(max-width:900px){.admin-seo-grid{grid-template-columns:1fr}}
+
+/* XINSHENG UPDATE 2026-09 v2: direct media upload status */
+.remove-media-button:disabled{opacity:.6;cursor:wait}
+.media-manager-status{margin:10px 0;color:#8b430f;font-weight:700}
+.media-manager-error,.media-slot-error{margin:8px 0;color:#b3261e;font-weight:700}
+.media-slot-error{font-size:12px;overflow-wrap:anywhere}

@@ -26,3 +26,13 @@
 .product-visual .product-cover-image,.product-visual .product-hover-image{position:absolute;inset:0;transition:opacity .35s ease,transform .45s ease}.product-visual .product-hover-image{opacity:0;transform:scale(1.025)}.product-card:hover .product-visual.has-hover-image .product-cover-image{opacity:0}.product-card:hover .product-visual.has-hover-image .product-hover-image{opacity:1;transform:scale(1)}
 @media(min-width:981px){.home-hero{display:flex;align-items:center;justify-content:flex-start}.home-hero .hero-copy{width:52%;max-width:none;margin-left:4vw;margin-right:auto;padding:70px 24px;text-align:left;display:flex;flex-direction:column;align-items:flex-start;background:transparent;border:0;box-shadow:none;backdrop-filter:none}.home-hero .display-title{max-width:100%;margin:28px 0 20px;font-size:clamp(40px,3.9vw,56px);line-height:1.05;letter-spacing:-.04em}.home-hero .display-title>span{display:block}.home-hero .display-title>.hero-title-line{color:var(--ink);white-space:nowrap}.home-hero .lead{max-width:520px;margin:0;text-align:left}.home-hero .hero-actions{justify-content:flex-start}.home-hero>.hero-dots{position:absolute;left:50%;bottom:25px;transform:translateX(-50%)} }
 @media(max-width:640px){.home-hero .hero-copy{text-align:center}.home-hero .display-title{max-width:100%;margin:24px auto 18px;font-size:clamp(38px,11vw,46px);letter-spacing:-.04em}.home-hero .display-title>span{display:block}.home-hero .lead{margin:0 auto;text-align:center}.home-hero .hero-actions{flex-direction:column;align-items:stretch}.home-hero .hero-actions a{width:100%}.home-hero>.hero-dots{bottom:20px}}
+
+/* XINSHENG UPDATE 2026-09: desktop hero position */
+@media(min-width:981px){
+  .home-hero{display:flex;align-items:center;justify-content:flex-start}
+  .home-hero.has-media .hero-copy{width:min(1180px,72vw);max-width:none;margin-left:0;margin-right:auto;padding:70px 5%;text-align:left;display:flex;flex-direction:column;align-items:flex-start}
+  .home-hero .display-title{max-width:100%;margin:28px 0 20px;font-size:clamp(40px,3.9vw,56px);line-height:1.05;letter-spacing:-.04em}
+  .home-hero .display-title>span{display:block;color:var(--orange)}
+  .home-hero .lead{max-width:720px;text-align:left}
+  .home-hero .hero-actions{justify-content:flex-start}
+}
